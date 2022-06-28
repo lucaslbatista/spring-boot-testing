@@ -55,7 +55,7 @@ class EmployeeRepositoryTest {
         //when - action or the behaviour we're testing
         List<Employee> employeeList = employeeRepository.findAll();
 
-        //then - verify thee output
+        //then - verify the output
         assertThat(employeeList)
                 .isNotNull()
                 .hasSize(2);
@@ -76,8 +76,36 @@ class EmployeeRepositoryTest {
         //when - action or the behaviour we're testing
         Optional<Employee> optionalEmployee = employeeRepository.findById(employee.getId());
 
-        //then - verify thee output
+        //then - verify the output
         assertThat(optionalEmployee)
                 .containsSame(employee);
+    }
+
+    @Test
+    @DisplayName("JUnit test for get employee by email operation")
+    void givenEmployeeEmail_whenFindByEmail_thenReturnEmployeeObject() {
+        //given - precondition or setup
+        Employee employee = Employee.builder()
+                .fistName("Employee")
+                .latsName("Employee")
+                .email("employee@gmai.com")
+                .build();
+        employeeRepository.save(employee);
+
+        //when - action or the behaviour we're testing
+        Optional<Employee> optionalEmployee = employeeRepository.findByEmail(employee.getEmail());
+
+        //then - verify the output
+        assertThat(optionalEmployee)
+                .containsSame(employee);
+    }
+
+    @Test
+    void given_when_then() {
+        //given - precondition or setup
+
+        //when - action or the behaviour we're testing
+
+        //then - verify the output
     }
 }
