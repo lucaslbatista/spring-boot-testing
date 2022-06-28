@@ -101,11 +101,23 @@ class EmployeeRepositoryTest {
     }
 
     @Test
-    void given_when_then() {
+    @DisplayName("JUnit test for update employee operation")
+    void givenEmployeeObject_whenUpdateEmployee_thenReturnUpdatedEmployee() {
         //given - precondition or setup
-
+        Employee employee = Employee.builder()
+                .fistName("Employee")
+                .latsName("Employee")
+                .email("employee@gmai.com")
+                .build();
+        employeeRepository.save(employee);
         //when - action or the behaviour we're testing
+        Employee savedEmployee = employeeRepository.findById(employee.getId()).get();
+        savedEmployee.setEmail("newEmail@gmail.com");
+        savedEmployee.setFistName("New Name");
+        Employee updatedEmployee = employeeRepository.save(employee);
 
         //then - verify the output
+        assertThat(updatedEmployee.getEmail()).isEqualTo("newEmail@gmail.com");
+        assertThat(updatedEmployee.getFistName()).isEqualTo("New Name");
     }
 }
