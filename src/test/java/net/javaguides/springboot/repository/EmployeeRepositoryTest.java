@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -14,10 +17,9 @@ class EmployeeRepositoryTest {
 
     @Autowired
     private EmployeeRepository employeeRepository;
-
+    @DisplayName("JUnit test for save employee operation")
     @Test
-    @DisplayName("JUnit test form save employee operation")
-    public void givenEmployeeObject_whenSave_thenReturnSavedEmployee() {
+    void givenEmployeeObject_whenSave_thenReturnSavedEmployee() {
         //given - precondition or setup
         Employee employee = Employee.builder()
                 .fistName("Employee")
@@ -30,7 +32,52 @@ class EmployeeRepositoryTest {
 
         //then - verify the output
         assertThat(savedEmployee).isNotNull();
-        assertThat(savedEmployee.getId()).isGreaterThan(0);
+        assertThat(savedEmployee.getId()).isPositive();
+    }
+    @DisplayName("JUnit test for find all employees operation")
+    @Test
+    void givenEmployeeList_whenFindAll_thenEmployeeList() {
+        //given - precondition or setup
+        Employee employee = Employee.builder()
+                .fistName("Employee")
+                .latsName("Employee")
+                .email("employee@gmai.com")
+                .build();
 
+        Employee employee1 = Employee.builder()
+                .fistName("Employee1")
+                .latsName("Employee1")
+                .email("employee1@gmai.com")
+                .build();
+        employeeRepository.save(employee);
+        employeeRepository.save(employee1);
+
+        //when - action or the behaviour we're testing
+        List<Employee> employeeList = employeeRepository.findAll();
+
+        //then - verify thee output
+        assertThat(employeeList)
+                .isNotNull()
+                .hasSize(2);
+    }
+
+    @DisplayName("JUnit test for get employee by id operation")
+    @Test
+    void givenEmployee_whenSave_thenFindById() {
+        //given - precondition or setup
+        Employee employee = Employee.builder()
+                .fistName("Employee")
+                .latsName("Employee")
+                .email("employee@gmai.com")
+                .build();
+
+        employeeRepository.save(employee);
+
+        //when - action or the behaviour we're testing
+        Optional<Employee> optionalEmployee = employeeRepository.findById(employee.getId());
+
+        //then - verify thee output
+        assertThat(optionalEmployee)
+                .containsSame(employee);
     }
 }
