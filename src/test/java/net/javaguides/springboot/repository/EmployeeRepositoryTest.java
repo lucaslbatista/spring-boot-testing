@@ -165,4 +165,67 @@ class EmployeeRepositoryTest {
         assertThat(optionalEmployee)
                 .containsSame(employee);
     }
+
+    @Test
+    @DisplayName("JUnit test for custom query using JPQL with named params")
+    void givenFistNameAndLastName_whenFindByJPQLNamedParams_thenReturnEmployeeObject() {
+        //given - precondition or setup
+        String firstName = "Employee";
+        String lastName = "Employee";
+        Employee employee = Employee.builder()
+                .fistName("Employee")
+                .latsName("Employee")
+                .email("employee@gmai.com")
+                .build();
+        employeeRepository.save(employee);
+
+        //when - action or the behaviour we're testing
+        Optional<Employee> optionalEmployee = employeeRepository.findByJPQLNamedParams(firstName, lastName);
+
+        //then - verify the output
+        assertThat(optionalEmployee)
+                .containsSame(employee);
+    }
+
+    @Test
+    @DisplayName("JUnit test for custom Native query with index")
+    void givenFistNameAndLastName_whenFindByNativeQuery_thenReturnEmployeeObject() {
+        //given - precondition or setup
+        String firstName = "Employee";
+        String lastName = "Employee";
+        Employee employee = Employee.builder()
+                .fistName("Employee")
+                .latsName("Employee")
+                .email("employee@gmai.com")
+                .build();
+        employeeRepository.save(employee);
+
+        //when - action or the behaviour we're testing
+        Optional<Employee> optionalEmployee = employeeRepository.findbyNativeSQL(firstName, lastName);
+
+        //then - verify the output
+        assertThat(optionalEmployee)
+                .containsSame(employee);
+    }
+
+    @Test
+    @DisplayName("JUnit test for custom native query with named params")
+    void givenFistNameAndLastName_whenFindByNativeNamedParams_thenReturnEmployeeObject() {
+        //given - precondition or setup
+        String firstName = "Employee";
+        String lastName = "Employee";
+        Employee employee = Employee.builder()
+                .fistName("Employee")
+                .latsName("Employee")
+                .email("employee@gmai.com")
+                .build();
+        employeeRepository.save(employee);
+
+        //when - action or the behaviour we're testing
+        Optional<Employee> optionalEmployee = employeeRepository.findbyNativeSQLNamed(firstName, lastName);
+
+        //then - verify the output
+        assertThat(optionalEmployee)
+                .containsSame(employee);
+    }
 }
