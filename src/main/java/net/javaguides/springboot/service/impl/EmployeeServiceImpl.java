@@ -6,6 +6,8 @@ import net.javaguides.springboot.repository.EmployeeRepository;
 import net.javaguides.springboot.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -17,10 +19,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee saveEmployee(Employee employee) {
-        employeeRepository.findByEmail(employee.getEmail())
-                .orElseThrow(
-                        () -> new ResourceNotFoundException("Employee already exist with given email: " + employee.getEmail())
-                );
+        Optional<Employee> optionalEmployee = employeeRepository.findByEmail(employee.getEmail());
+
+        if (optionalEmployee.isPresent()) {
+            throw new ResourceNotFoundException("Employee already exist with given email: " + employee.getEmail());
+        }
+
         return employeeRepository.save(employee);
     }
 }
