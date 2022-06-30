@@ -21,8 +21,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EmployeeServiceTest {
@@ -150,6 +150,40 @@ class EmployeeServiceTest {
         //then - verify the output
         assertThat(updateEmployee.getEmail()).isEqualTo(newEmail);
         assertThat(updateEmployee.getFistName()).isEqualTo(newName);
+    }
+
+
+    @Test
+    @DisplayName("JUnit test for deleteEmployee method")
+    void givenEmployeeId_whenDeleteEmployee_thenNothing() {
+        //given - precondition or setup
+        given(employeeRepository.findById(anyLong())).willReturn(Optional.of(employee));
+        willDoNothing().given(employeeRepository).deleteById(anyLong());
+
+        //when - action or the behaviour that we are going test
+        long employeeId = 1L;
+        employeeService.deleteEmployee(employeeId);
+
+        //then - verify the output
+        verify(employeeRepository, times(1)).deleteById(employeeId);
+    }
+
+    @Test
+    @DisplayName("JUnit test for deleteEmployee method when employee not exist")
+    void givenEmployeeId_whenDeleteEmployee_thenThrowsException() {
+        //given - precondition or setup
+        given(employeeRepository.findById(anyLong())).willReturn(Optional.empty());
+
+        //when - action or the behaviour that we are going test
+        long employeeId = 1L;
+        //using assertj
+        assertThatExceptionOfType(ResourceNotFoundException.class)
+                .isThrownBy(() -> {
+                    employeeService.deleteEmployee(employeeId);
+                });
+
+        //then - verify the output
+        verify(employeeRepository, never()).deleteById(anyLong());
     }
 
 }
