@@ -19,6 +19,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -116,6 +117,19 @@ class EmployeeServiceTest {
         assertThat(allEmployees)
                 .isNotNull()
                 .isEmpty();
+    }
+
+    @Test
+    @DisplayName("JUnit test for getEmployeeById method")
+    void givenEmployeeId_whenGetEmployeeById_thenReturnEmployee() {
+        //given - precondition or setup
+        given(employeeRepository.findById(anyLong())).willReturn(Optional.of(employee));
+
+        //when - action or the behaviour that we are going test
+        Optional<Employee> optionalEmployee = employeeService.getEmployeeById(1L);
+
+        //then - verify the output
+        assertThat(optionalEmployee).isPresent();
     }
 
 }
