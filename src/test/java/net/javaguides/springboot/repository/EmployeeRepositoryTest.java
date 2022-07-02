@@ -23,8 +23,8 @@ class EmployeeRepositoryTest {
     @BeforeEach
     void setup() {
         employee = Employee.builder()
-                .fistName("Employee")
-                .latsName("Employee")
+                .firstName("Employee")
+                .lastName("Employee")
                 .email("employee@gmai.com")
                 .build();
     }
@@ -47,8 +47,8 @@ class EmployeeRepositoryTest {
     void givenEmployeeList_whenFindAll_thenEmployeeList() {
         //given - precondition or setup
         Employee employee2 = Employee.builder()
-                .fistName("Employee1")
-                .latsName("Employee1")
+                .firstName("Employee1")
+                .lastName("Employee1")
                 .email("employee2@gmai.com")
                 .build();
         employeeRepository.save(employee);
@@ -104,12 +104,12 @@ class EmployeeRepositoryTest {
         String name = "New Name";
 
         savedEmployee.setEmail(email);
-        savedEmployee.setFistName(name);
+        savedEmployee.setFirstName(name);
         Employee updatedEmployee = employeeRepository.save(employee);
 
         //then - verify the output
         assertThat(updatedEmployee.getEmail()).isEqualTo(email);
-        assertThat(updatedEmployee.getFistName()).isEqualTo(name);
+        assertThat(updatedEmployee.getFirstName()).isEqualTo(name);
     }
 
     @Test

@@ -37,8 +37,8 @@ class EmployeeServiceTest {
     void setup() {
         employee = Employee.builder()
                 .id(1L)
-                .fistName("Employee")
-                .latsName("Employee")
+                .firstName("Employee")
+                .lastName("Employee")
                 .email("employee@gmai.com")
                 .build();
     }
@@ -88,8 +88,8 @@ class EmployeeServiceTest {
         //given - precondition or setup
         Employee employee2 = Employee.builder()
                 .id(2L)
-                .fistName("Employee2")
-                .latsName("Employee2")
+                .firstName("Employee2")
+                .lastName("Employee2")
                 .email("employee2@gmai.com")
                 .build();
         given(employeeRepository.findAll()).willReturn(List.of(employee, employee2));
@@ -142,14 +142,14 @@ class EmployeeServiceTest {
         String newName = "New name";
 
         employee.setEmail(newEmail);
-        employee.setFistName(newName);
+        employee.setFirstName(newName);
 
         //when - action or the behaviour that we are going test
         Employee updateEmployee = employeeService.updateEmployee(employee);
 
         //then - verify the output
         assertThat(updateEmployee.getEmail()).isEqualTo(newEmail);
-        assertThat(updateEmployee.getFistName()).isEqualTo(newName);
+        assertThat(updateEmployee.getFirstName()).isEqualTo(newName);
     }
 
 
