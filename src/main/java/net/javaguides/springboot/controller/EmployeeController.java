@@ -30,7 +30,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployee(@Param("id") long employeeId) {
+    public ResponseEntity<Employee> getEmployee(@PathVariable("id") long employeeId) {
         return employeeService.getEmployeeById(employeeId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
