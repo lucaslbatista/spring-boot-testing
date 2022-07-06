@@ -19,8 +19,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -133,4 +132,65 @@ class EmployeeControllerTest {
         response.andExpect(status().isNotFound())
                 .andDo(print());
     }
+
+    @Test
+    @DisplayName("JUnit test for update employee REST API - POSITIVE SCENARIO")
+    void givenUpdateEmployee_whenUpdateEmployee_thenReturnUpdate() throws Exception {
+        //given - precondition or setup
+        long employeeId = 1L;
+        Employee employee = Employee.builder()
+                .firstName("Employee")
+                .lastName("Employee")
+                .email("employee@gmai.com")
+                .build();
+
+        Employee updatedEmployee = Employee.builder()
+                .firstName("Employee2")
+                .lastName("Employee2")
+                .email("employee2@gmai.com")
+                .build();
+
+        //when - action or the behaviour that we are going test
+        given(employeeService.getEmployeeById(employeeId)).willReturn(Optional.of(employee));
+        given(employeeService.updateEmployee(any(Employee.class)))
+                .willAnswer(invocation -> invocation.getArgument(0));
+
+        ResultActions reponse = mockMvc.perform(put("/api/employees/{id}", employeeId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedEmployee)));
+        //then - verify the output
+
+
+        reponse.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.firstName", is(updatedEmployee.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(updatedEmployee.getLastName())))
+                .andExpect(jsonPath("$.email", is(updatedEmployee.getEmail())));
+    }
+
+    @Test
+    @DisplayName("JUnit test for update employee REST API - NEGATIVE SCENARIO")
+    void givenInvalidEmployeeId_whenUpdateEmployee_thenReturnEmpty() throws Exception {
+        //given - precondition or setup
+        long employeeId = 1L;
+        Employee updatedEmployee = Employee.builder()
+                .firstName("Employee2")
+                .lastName("Employee2")
+                .email("employee2@gmai.com")
+                .build();
+
+        //when - action or the behaviour that we are going test
+        given(employeeService.getEmployeeById(employeeId)).willReturn(Optional.empty());
+
+        ResultActions reponse = mockMvc.perform(put("/api/employees/{id}", employeeId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedEmployee)));
+
+        //then - verify the output
+
+
+        reponse.andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
 }
