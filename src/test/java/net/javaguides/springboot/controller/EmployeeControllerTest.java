@@ -195,7 +195,7 @@ class EmployeeControllerTest {
     }
 
     @Test
-    @DisplayName("JUnit test for delete employee REST API")
+    @DisplayName("JUnit test for delete employee REST API - positive scenario")
     void givenEmployeeId_whenDeleteEmployee_thenReturn200() throws Exception {
         //given - precondition or setup
         long employeeId = 1L;
@@ -208,5 +208,23 @@ class EmployeeControllerTest {
         response.andExpect(status().isNoContent())
                 .andDo(print());
     }
+
+//    @Test
+//    @DisplayName("JUnit test for delete employee REST API - negative scenario")
+//    void givenEmployeeId_whenDeleteEmployee_thenThrowsException() throws Exception {
+//        //given - precondition or setup
+//        long employeeId = 1L;
+//        willDoNothing().given(employeeService).deleteEmployee(employeeId);
+//
+//        //when - action or the behaviour that we are going test
+//        //ResultActions response = ;
+//
+//        //then - verify the output
+//        mockMvc.perform(delete("/api/employees/{id}", employeeId))
+//                .andExpect(status().isNoContent())
+//                .andExpect(result -> assertThat(result.getResolvedException() instanceof ResourceNotFoundException))
+//                .andDo(print());
+//
+//    }
 
 }
