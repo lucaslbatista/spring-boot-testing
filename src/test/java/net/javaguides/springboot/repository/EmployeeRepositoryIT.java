@@ -23,6 +23,8 @@ class EmployeeRepositoryIT {
 
     @BeforeEach
     void setup() {
+        employeeRepository.deleteAll();
+
         employee = Employee.builder()
                 .firstName("Employee")
                 .lastName("Employee")
